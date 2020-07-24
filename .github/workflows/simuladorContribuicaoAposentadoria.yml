@@ -1,0 +1,57 @@
+name: SimuladorContribuicaoAposentadoria
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Verify .NET Core Installation
+      run: dotnet --version
+    - name: Setup PostgreSQL
+      uses: Harmon758/postgresql-action@v1.0.0
+      with:
+        postgresql user: 'postgres'
+        postgresql password: '1234'
+    - name: Verify PostgreSQL Installation
+      run: psql --version
+    - name: Setup Node.js 10.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.x
+    - name: Verify Node.js Installation
+      run: node --version
+    - name: Setup Newman
+      run: npm install -g newman
+    - name: Verify Newman Installation
+      run: newman --version
+    - name: Install Dependencies
+      run: dotnet restore
+    - name: Build Project
+      run: dotnet build --configuration Release --no-restore
+    - name: Running Project
+      run: dotnet run --configuration Release --no-restore --environment "Development" --project ./SimuladorContribuicaoAposentadoria.Api/SimuladorContribuicaoAposentadoria.Api.csproj &
+    - name: Running Postman Tests
+      run: newman run ./SimuladorContribuicaoAposentadoria.Postman/SimuladorContribuicaoAposentadoria.postman_collection.json --environment ./SimuladorContribuicaoAposentadoria.Postman/SimuladorContribuicaoAposentadoria.postman_environment.json --insecure
+    - name: Running Unit Tests
+      run: dotnet test --no-restore --verbosity normal
+    - name: Generate Coverage Report
+      run: |
+        cd ./SimuladorContribuicaoAposentadoria.NUnitTest/
+        dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+    - name: Publish Coverage Report to Coveralls.io
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: ./SimuladorContribuicaoAposentadoria.NUnitTest/TestResults/coverage.info

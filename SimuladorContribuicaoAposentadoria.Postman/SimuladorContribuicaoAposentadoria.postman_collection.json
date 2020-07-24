@@ -1,0 +1,2383 @@
+{
+	"info": {
+		"_postman_id": "833693f0-41f4-4f8d-8b37-0aac0b0cda11",
+		"name": "SimuladorContribuicaoAposentadoria",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authorization",
+			"item": [
+				{
+					"name": "/Login/Authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e9c87a81-a412-4704-8f47-47e19f9d55c0",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}",
+									"",
+									"pm.environment.set(\"token\", responseJSON.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"{{usuario}}\",\r\n  \"senha\": \"{{senha}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Login/Authenticate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Login",
+								"Authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Login/Authenticate required field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bf071c77-1c1f-40ad-ad74-b4b85a66e626",
+								"exec": [
+									"tests[\"status é igual a 400\"] = responseCode.code === 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Login/Authenticate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Login",
+								"Authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Login/Authenticate não autenticado (usuario)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b672b5d1-08e7-4192-8879-50292f242aa2",
+								"exec": [
+									"tests[\"status é igual a 400\"] = responseCode.code === 400;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"teste\",\r\n  \"senha\": \"415263\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Login/Authenticate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Login",
+								"Authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Login/Authenticate não autenticado (senha)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8d52eaca-0555-47c8-be50-b330dc0ad6f2",
+								"exec": [
+									"tests[\"status é igual a 400\"] = responseCode.code === 400;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"admin\",\r\n  \"senha\": \"132\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Login/Authenticate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Login",
+								"Authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Login/Authenticated",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cafff6ca-a528-419e-8d42-76c611215fc5",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/Login/Authenticated",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Login",
+								"Authenticated"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Login/Authenticated não autorizado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bcc067d3-ecb4-4c2c-a9d8-c8ddc453eab3",
+								"exec": [
+									"tests[\"status é igual a 401\"] = responseCode.code === 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwicm9sZSI6IjEiLCJuYmYiOjE1ODcyNDgxNDMsImV4cCI6MTU4NzI1NTM0MywiaWF0IjoxNTg3MjQ4MTQzfQ.mMbFfQTyYhfCcPh7JPUeHvNAWSLWy_WOObQO5Pf1lxA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/Login/Authenticated",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Login",
+								"Authenticated"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Simulacao",
+			"item": [
+				{
+					"name": "/Simulacao all não autorizado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d7ff26e6-f6e3-499e-8dd3-8b4bcdb1aaf7",
+								"exec": [
+									"tests[\"status é igual a 401\"] = responseCode.code === 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwicm9sZSI6IjEiLCJuYmYiOjE1ODcyNDgxNDMsImV4cCI6MTU4NzI1NTM0MywiaWF0IjoxNTg3MjQ4MTQzfQ.mMbFfQTyYhfCcPh7JPUeHvNAWSLWy_WOObQO5Pf1lxA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/Simulacao",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Simulacao/Simular M - N",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "71fb820e-10d0-46b6-a0c7-20484e782a0e",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"salario\": 4728,\r\n  \"nascimento\": \"1994-08-27T00:00:00.000Z\",\r\n  \"idadeComQueComecouContribuicao\": 18,\r\n  \"sexo\": \"M\",\r\n  \"tipo\": \"N\",\r\n  \"usuario\": \"{{usuario}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Simulacao/Simular",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao",
+								"Simular"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Simulacao/Simular M - R",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a9167ea-c514-4b7b-8d86-bd0962626ed2",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"salario\": 4728,\r\n  \"nascimento\": \"1994-08-27T00:00:00.000Z\",\r\n  \"idadeComQueComecouContribuicao\": 18,\r\n  \"sexo\": \"M\",\r\n  \"tipo\": \"R\",\r\n  \"usuario\": \"{{usuario}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Simulacao/Simular",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao",
+								"Simular"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Simulacao/Simular F - N",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dcf3b2e6-81ba-4a54-98f5-698e407e03bf",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"salario\": 4728,\r\n  \"nascimento\": \"1994-08-27T00:00:00.000Z\",\r\n  \"idadeComQueComecouContribuicao\": 18,\r\n  \"sexo\": \"F\",\r\n  \"tipo\": \"N\",\r\n  \"usuario\": \"{{usuario}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Simulacao/Simular",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao",
+								"Simular"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Simulacao/Simular F - R",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ead3598c-39f1-4c52-a997-e4dd6eb3efd8",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"salario\": 4728,\r\n  \"nascimento\": \"1994-08-27T00:00:00.000Z\",\r\n  \"idadeComQueComecouContribuicao\": 18,\r\n  \"sexo\": \"F\",\r\n  \"tipo\": \"R\",\r\n  \"usuario\": \"{{usuario}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Simulacao/Simular",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao",
+								"Simular"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Simulacao/Simular G - N",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "59b2713b-81ca-4a61-9cb6-d067307ebf06",
+								"exec": [
+									"tests[\"status é igual a 400\"] = responseCode.code === 400;\r",
+									"\r",
+									"try { \r",
+									"    responseJSON = JSON.parse(responseBody); \r",
+									"    tests['resposta é um JSON válido'] = true;\r",
+									"}\r",
+									"catch (e) { \r",
+									"    responseJSON = {}; \r",
+									"    tests['resposta não é um JSON válido'] = false;\r",
+									"}\r",
+									"\r",
+									"tests['sexo invalido'] = responseJSON.Mensagem === 'Sexo invalido. (Masculino = M, Feminino = F)';"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"salario\": 4728,\r\n  \"nascimento\": \"1994-08-27T00:00:00.000Z\",\r\n  \"idadeComQueComecouContribuicao\": 18,\r\n  \"sexo\": \"G\",\r\n  \"tipo\": \"N\",\r\n  \"usuario\": \"{{usuario}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Simulacao/Simular",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao",
+								"Simular"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Simulacao/Simular M - G",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "869ea656-12e3-49e5-8c73-6edfc6d335ad",
+								"exec": [
+									"tests[\"status é igual a 400\"] = responseCode.code === 400;\r",
+									"\r",
+									"try { \r",
+									"    responseJSON = JSON.parse(responseBody); \r",
+									"    tests['resposta é um JSON válido'] = true;\r",
+									"}\r",
+									"catch (e) { \r",
+									"    responseJSON = {}; \r",
+									"    tests['resposta não é um JSON válido'] = false;\r",
+									"}\r",
+									"\r",
+									"tests['sexo invalido'] = responseJSON.Mensagem === 'Tipo de aposentadoria invalido. (Tempo Normal = N, Tempo Reduzido = R)';"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"salario\": 4728,\r\n  \"nascimento\": \"1994-08-27T00:00:00.000Z\",\r\n  \"idadeComQueComecouContribuicao\": 18,\r\n  \"sexo\": \"M\",\r\n  \"tipo\": \"G\",\r\n  \"usuario\": \"{{usuario}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Simulacao/Simular",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao",
+								"Simular"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Simulacao/Simular G - R",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7f044001-d2bd-4b3e-b578-ca3fd9b66f10",
+								"exec": [
+									"tests[\"status é igual a 400\"] = responseCode.code === 400;\r",
+									"\r",
+									"try { \r",
+									"    responseJSON = JSON.parse(responseBody); \r",
+									"    tests['resposta é um JSON válido'] = true;\r",
+									"}\r",
+									"catch (e) { \r",
+									"    responseJSON = {}; \r",
+									"    tests['resposta não é um JSON válido'] = false;\r",
+									"}\r",
+									"\r",
+									"tests['sexo invalido'] = responseJSON.Mensagem === 'Sexo invalido. (Masculino = M, Feminino = F)';"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"salario\": 4728,\r\n  \"nascimento\": \"1994-08-27T00:00:00.000Z\",\r\n  \"idadeComQueComecouContribuicao\": 18,\r\n  \"sexo\": \"G\",\r\n  \"tipo\": \"R\",\r\n  \"usuario\": \"{{usuario}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Simulacao/Simular",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao",
+								"Simular"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Simulacao/Simular required field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "15964811-25f2-4100-8954-821d98c4dc9d",
+								"exec": [
+									"tests[\"status é igual a 400\"] = responseCode.code === 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Simulacao/Simular",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao",
+								"Simular"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Simulacao all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "38093596-c60e-47ee-ab8c-e0065e3dc912",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}",
+									"",
+									"pm.environment.set(\"idTeste\", responseJSON[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/Simulacao",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Simulacao all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0954b14d-f03c-4232-ab8b-2a779fac1a0d",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Simulacao",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Simulacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Simulacao?$top=1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cf006e8b-301d-40db-8b48-bfad60499df9",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Simulacao?$top=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Simulacao"
+							],
+							"query": [
+								{
+									"key": "$top",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Simulacao?$skip=2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "41448139-72c9-4148-ae49-1f39b1c9ce82",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Simulacao?$skip=2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Simulacao"
+							],
+							"query": [
+								{
+									"key": "$skip",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Simulacao?$count=true",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "08ebc201-4b92-482b-95af-82cd4546b33b",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Simulacao?$count=true",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Simulacao"
+							],
+							"query": [
+								{
+									"key": "$count",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Simulacao?$expand=usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f8001457-cc53-46ee-b017-59e276e31ba9",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido.'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido.'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Simulacao?$expand=usuario,resultado",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Simulacao"
+							],
+							"query": [
+								{
+									"key": "$expand",
+									"value": "usuario,resultado"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Simulacao?$select=descricao",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ed450e6a-f451-47f4-bb13-10344b9d5011",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido.'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido.'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Simulacao?$expand=usuario($select=nome),resultado($select=valorpagomes)&$select=salario",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Simulacao"
+							],
+							"query": [
+								{
+									"key": "$expand",
+									"value": "usuario($select=nome),resultado($select=valorpagomes)"
+								},
+								{
+									"key": "$select",
+									"value": "salario"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Simulacao?$filter=id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "20460b83-cee8-4410-b1b1-14b607b6f8f4",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Simulacao?$filter=id eq {{idTeste}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Simulacao"
+							],
+							"query": [
+								{
+									"key": "$filter",
+									"value": "id eq {{idTeste}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Simulacao/{id} delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e38d009c-22c1-4cbe-ad9d-92e1ea5ac3d6",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/Simulacao/{{idTeste}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao",
+								"{{idTeste}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Simulacao/{id} delete not fount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c34090d7-1976-455c-99bc-433864998240",
+								"exec": [
+									"tests[\"status é igual a 404\"] = responseCode.code === 404;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/Simulacao/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Simulacao",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2f2f7d7f-259f-46b8-96df-a04226918b34",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "9be601d5-ea35-4b0d-8c46-1419601b378a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "/Usuario all não autorizado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7ad3fae9-bbfd-4e69-9520-59595d48291e",
+								"exec": [
+									"tests[\"status é igual a 401\"] = responseCode.code === 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwicm9sZSI6IjEiLCJuYmYiOjE1ODcyNDgxNDMsImV4cCI6MTU4NzI1NTM0MywiaWF0IjoxNTg3MjQ4MTQzfQ.mMbFfQTyYhfCcPh7JPUeHvNAWSLWy_WOObQO5Pf1lxA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/Usuario",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Usuario all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "60b69d00-22f1-43b6-b203-96d03e08bab1",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/Usuario",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Usuario all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1becd97c-f5ae-4ff6-bf70-c535212758fc",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Usuario",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Usuario?$top=1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5411a91c-42c1-404c-91b9-c69eebd4bc4c",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}",
+									"",
+									"pm.environment.set(\"idTeste\", responseJSON.value[0].Id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Usuario?$top=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Usuario"
+							],
+							"query": [
+								{
+									"key": "$top",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Usuario?$skip=2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bf6dcd92-d5bc-48ec-9a7a-6d9d964b72bf",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Usuario?$skip=2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Usuario"
+							],
+							"query": [
+								{
+									"key": "$skip",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Usuario?$count=true",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b94a208-91ce-4132-b828-8d3276242945",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Usuario?$count=true",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Usuario"
+							],
+							"query": [
+								{
+									"key": "$count",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Usuario?$select=nome",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "93e84fc2-b4cc-4522-8ad3-c2751645a432",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Usuario?$select=nome",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Usuario"
+							],
+							"query": [
+								{
+									"key": "$select",
+									"value": "nome"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Usuario?$filter=id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2d6fd577-ce5c-4447-bff5-4dcc4a3231e9",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Usuario?$filter=id eq {{idTeste}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Usuario"
+							],
+							"query": [
+								{
+									"key": "$filter",
+									"value": "id eq {{idTeste}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Usuario/{id} by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a6e0788-ce62-4fa5-8fa2-25b8ee2d3c61",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/Usuario/{{idTeste}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario",
+								"{{idTeste}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Usuario/{id} not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "edb2f02f-73d6-4b35-8db3-f5db641d5f00",
+								"exec": [
+									"tests[\"status é igual a 404\"] = responseCode.code === 404;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/Usuario/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Usuario new",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "64caffe1-4895-4887-9757-3a2449ab358c",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"teste post api\",\r\n  \"senha\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Usuario",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Usuario new required field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd903026-85ff-427b-a409-d7c549c76be4",
+								"exec": [
+									"tests[\"status é igual a 400\"] = responseCode.code === 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Usuario",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Usuario new duplicate user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b097247c-f82b-49d6-8624-89c05b174e15",
+								"exec": [
+									"tests[\"status é igual a 400\"] = responseCode.code === 400;\r",
+									"\r",
+									"try { \r",
+									"    responseJSON = JSON.parse(responseBody); \r",
+									"    tests['resposta é um JSON válido'] = true;\r",
+									"}\r",
+									"catch (e) { \r",
+									"    responseJSON = {}; \r",
+									"    tests['resposta não é um JSON válido'] = false;\r",
+									"}\r",
+									"\r",
+									"tests['sexo invalido'] = responseJSON.Mensagem === 'Usuário já cadastrado';"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"teste post api\",\r\n  \"senha\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Usuario",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/OData/Usuario?$filter=nome",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2542a4da-a98d-457f-bf2d-80c6c47a9663",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}",
+									"",
+									"pm.environment.set(\"idTeste\", responseJSON.value[0].Id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/OData/Usuario?$filter=nome eq 'teste post api'",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"OData",
+								"Usuario"
+							],
+							"query": [
+								{
+									"key": "$filter",
+									"value": "nome eq 'teste post api'"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Usuario edit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c1258a3c-639a-4d1a-8233-8ec1c5df8a17",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"{{idTeste}}\",\r\n  \"nome\": \"teste put api\",\r\n  \"senha\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Usuario",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Usuario edit not found database",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b39bf1e1-c28b-43a2-815b-0543741f6022",
+								"exec": [
+									"tests[\"status é igual a 404\"] = responseCode.code === 404;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\r\n  \"nome\": \"teste put api\",\r\n  \"senha\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Usuario",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Usuario edit not found field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0795f5f5-aedd-4ba4-aadb-a124795712ce",
+								"exec": [
+									"tests[\"status é igual a 404\"] = responseCode.code === 404;",
+									"",
+									"try { ",
+									"    responseJSON = JSON.parse(responseBody); ",
+									"    tests['resposta é um JSON válido'] = true;",
+									"}",
+									"catch (e) { ",
+									"    responseJSON = {}; ",
+									"    tests['resposta não é um JSON válido'] = false;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"teste put api\",\r\n  \"senha\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Usuario",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Usuario/{id} delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "eb8bc7e7-37d6-4912-95e2-e55dadd1cf0b",
+								"exec": [
+									"tests[\"status é igual a 200\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/Usuario/{{idTeste}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario",
+								"{{idTeste}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/Usuario/{id} delete not fount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "25adbee6-3ffd-46f8-98b4-771391ee1dc6",
+								"exec": [
+									"tests[\"status é igual a 404\"] = responseCode.code === 404;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/Usuario/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Usuario",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
